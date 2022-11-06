@@ -13,7 +13,7 @@
 	<groupId>br.com.llduran</groupId>
 	<artifactId>rest-with-spring-boot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>RestWithSpringBoot</name>
+	<name>rest-with-spring-boot</name>
 	<description>API REST atendendo todos os níveis de maturidade RESTful</description>
 
 	<properties>
