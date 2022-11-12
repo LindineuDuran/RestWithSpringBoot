@@ -1,6 +1,8 @@
 package br.com.llduran.services;
 
+import br.com.llduran.controllers.PersonController;
 import br.com.llduran.data.vo.v1.PersonVO;
+import br.com.llduran.exceptions.RequiredObjectIsNullException;
 import br.com.llduran.exceptions.ResourceNotFoundException;
 import br.com.llduran.mapper.DozerMapper;
 import br.com.llduran.model.Person;
@@ -10,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.logging.Logger;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class PersonServices
@@ -23,7 +28,13 @@ public class PersonServices
 	{
 		logger.info("Finding all people!");
 
-		return DozerMapper.parseListObjects(repository.findAll(), PersonVO.class);
+		var persons = DozerMapper.parseListObjects(repository.findAll(), PersonVO.class);
+
+		persons
+			.stream()
+			.forEach(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
+
+		return persons;
 	}
 
 	public PersonVO findById(Long id)
@@ -33,22 +44,30 @@ public class PersonServices
 		var entity = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
-		return DozerMapper.parseObject(entity, PersonVO.class);
+		var vo = DozerMapper.parseObject(entity, PersonVO.class);
+		vo.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+
+		return vo;
 	}
 
 	public PersonVO create(PersonVO person)
 	{
+		if (person == null) throw new RequiredObjectIsNullException();
+
 		logger.info("Creating one person!");
 
 		var entity = DozerMapper.parseObject(person, Person.class);
 
-		var vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+		var vo =  DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
 
 		return vo;
 	}
 
 	public PersonVO update(Long id, PersonVO person)
 	{
+		if (person == null) throw new RequiredObjectIsNullException();
+
 		logger.info("Updating one person!");
 
 		var entity = repository.findById(id)
@@ -58,6 +77,7 @@ public class PersonServices
 		entityNew.setId(id);
 
 		var vo = DozerMapper.parseObject(repository.save(entityNew), PersonVO.class);
+		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
 
 		return vo;
 	}
