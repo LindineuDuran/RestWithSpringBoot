@@ -1,7 +1,6 @@
 package br.com.llduran.controllers;
 
 import br.com.llduran.data.vo.v1.PersonVO;
-import br.com.llduran.data.vo.v2.PersonVOV2;
 import br.com.llduran.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
