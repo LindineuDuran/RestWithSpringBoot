@@ -1,4 +1,4 @@
-package br.com.llduran.unittests.services;
+package br.com.llduran.unittests.mockito.services;
 import br.com.llduran.data.vo.v1.PersonVO;
 import br.com.llduran.exceptions.RequiredObjectIsNullException;
 import br.com.llduran.model.Person;
