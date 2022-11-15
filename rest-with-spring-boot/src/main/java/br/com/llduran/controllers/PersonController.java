@@ -20,10 +20,10 @@ import java.util.List;
 @Tag(name = "People", description = "Endpoints for Managing People")
 public class PersonController
 {
-	@Autowired
-	private PersonServices service;
+	@Autowired private PersonServices service;
 
-	@GetMapping(produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML })
+	//@CrossOrigin(origins = "http://localhost:8080")
+	@GetMapping(produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	@Operation(summary = "Finds all People", description = "Finds all People",
 			tags = {"People"},
 			responses = {
@@ -40,10 +40,13 @@ public class PersonController
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
 			}
 	)
-	public List<PersonVO> findAll() { return service.findAll(); }
+	public List<PersonVO> findAll()
+	{
+		return service.findAll();
+	}
 
-	@GetMapping(value = "/{id}",
-			produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML  })
+	//@CrossOrigin(origins = "http://localhost:8080")
+	@GetMapping(value = "/{id}", produces ={ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	@Operation(summary = "Finds a Person", description = "Finds a Person",
 			tags = {"People"},
 			responses = {
@@ -57,11 +60,14 @@ public class PersonController
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
 			}
 	)
-	public PersonVO findById(@PathVariable(value = "id") Long id) { return service.findById(id); }
+	public PersonVO findById(@PathVariable(value = "id") Long id)
+	{
+		return service.findById(id);
+	}
 
-	@PostMapping(
-			consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML  },
-			produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML  })
+	//@CrossOrigin(origins = {"http://localhost:8080", "https://erudio.com.br"})
+	@PostMapping(consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
+			produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	@Operation(summary = "Adds a new Person",
 			description = "Adds a new Person by passing in a JSON, XML or YML representation of the person!",
 			tags = {"People"},
@@ -76,9 +82,8 @@ public class PersonController
 	)
 	public PersonVO create(@RequestBody PersonVO person) { return service.create(person); }
 
-	@PutMapping(
-			consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML  },
-			produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML  })
+	@PutMapping(value = "/{id}", consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
+			produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	@Operation(summary = "Updates a Person",
 			description = "Updates a Person by passing in a JSON, XML or YML representation of the person!",
 			tags = {"People"},
@@ -92,7 +97,10 @@ public class PersonController
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
 			}
 	)
-	public PersonVO update(@PathVariable(value = "id") Long id, @RequestBody PersonVO person) { return service.update(id, person); }
+	public PersonVO update(@PathVariable(value = "id") Long id, @RequestBody PersonVO person)
+	{
+		return service.update(id, person);
+	}
 
 	@DeleteMapping(value = "/{id}")
 	@Operation(summary = "Deletes a Person",
