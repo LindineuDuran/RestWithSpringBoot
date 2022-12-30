@@ -1,4 +1,5 @@
 package br.com.llduran.unittests.mockito.services;
+
 import br.com.llduran.data.vo.v1.PersonVO;
 import br.com.llduran.exceptions.RequiredObjectIsNullException;
 import br.com.llduran.model.Person;
@@ -27,8 +28,7 @@ class PersonServicesTest
 {
 	MockPerson input;
 
-	@InjectMocks
-	private PersonServices service;
+	@InjectMocks private PersonServices service;
 
 	@Mock PersonRepository repository;
 
@@ -51,7 +51,6 @@ class PersonServicesTest
 		assertNotNull(result);
 		assertNotNull(result.getKey());
 		assertNotNull(result.getLinks());
-
 		assertTrue(result.getLinks().toString().contains("</api/person/v1/1>;rel=\"self\""));
 		assertEquals("Address Test1", result.getAddress());
 		assertEquals("First Name Test1", result.getFirstName());
@@ -89,16 +88,13 @@ class PersonServicesTest
 	@Test
 	void testCreateWithNullPerson()
 	{
-		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
-			service.create(null);
-		});
+		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> { service.create(null); });
 
 		String expectedMessage = "It is not allowed to persist a null object!";
 		String actualMessage = exception.getMessage();
 
 		assertTrue(actualMessage.contains(expectedMessage));
 	}
-
 
 	@Test
 	void testUpdate()
@@ -114,7 +110,7 @@ class PersonServicesTest
 		when(repository.findById(1L)).thenReturn(Optional.of(entity));
 		when(repository.save(entity)).thenReturn(persisted);
 
-		var result = service.update(vo.getKey(), vo);
+		var result = service.update(1L, vo);
 
 		assertNotNull(result);
 		assertNotNull(result.getKey());
@@ -130,9 +126,7 @@ class PersonServicesTest
 	@Test
 	void testUpdateWithNullPerson()
 	{
-		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
-			service.update(0L, null);
-		});
+		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> { service.update(null, null); });
 
 		String expectedMessage = "It is not allowed to persist a null object!";
 		String actualMessage = exception.getMessage();
@@ -180,6 +174,8 @@ class PersonServicesTest
 		assertNotNull(personFour);
 		assertNotNull(personFour.getKey());
 		assertNotNull(personFour.getLinks());
+
+		System.out.println(personFour.getLinks());
 
 		assertTrue(personFour.getLinks().toString().contains("</api/person/v1/4>;rel=\"self\""));
 		assertEquals("Address Test4", personFour.getAddress());

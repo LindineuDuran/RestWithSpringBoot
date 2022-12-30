@@ -20,7 +20,10 @@ public class BookVO extends RepresentationModel<BookVO> implements Serializable
 	private Long key;
 
 	private String author;
+
 	private Date launchDate;
+
 	private Double price;
+
 	private String title;
 }

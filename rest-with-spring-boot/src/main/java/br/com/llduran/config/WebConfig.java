@@ -1,6 +1,6 @@
 package br.com.llduran.config;
 
-import br.com.llduran.serialization.converter.YamlJackson2HttpMesageConverter;
+import br.com.llduran.converter.YamlJackson2HttpMesageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
